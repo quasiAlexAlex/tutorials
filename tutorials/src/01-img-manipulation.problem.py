@@ -23,12 +23,12 @@ img = cv2.imread("tutorials/data/images/logo.png")
 if img is None:
     raise FileNotFoundError("image not found")
 
-# TODO Resize image with 'resize'.
+# Resize image with 'resize'.
+img = cv2.resize(img, (500,400))
 
 
-
-# TODO Rotate image (but keep it rectangular) with 'rotate'.
-
+# Rotate image (but keep it rectangular) with 'rotate'.
+img = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
 # Save image with 'imwrite'.
 cv2.imwrite("output.jpg", img)
 
