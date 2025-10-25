@@ -40,16 +40,19 @@ font_size_small = 1
 font_size_smaller = 0.6
 font = cv2.FONT_HERSHEY_SIMPLEX
 
-# TODO Define  RGB colors as variables
+# Define  RGB colors as variables
+red = 100
+green = 50
+blue = 20
 
 # Exemplary color conversion (only for the class), tests usage of cv2.cvtColor
 
-# TODO Enter some default values and uncomment
-# hue =
+# Enter some default values and uncomment
+hue = 100
 hue_range = 10
-# saturation =
+saturation = 100
 saturation_range = 100
-# value =
+value = 100
 value_range = 100
 
 
@@ -62,6 +65,10 @@ def color_picker(event, x, y, flags, param):
         saturation = int(s)
         value = int(v)
         print("New color selected:", (hue, saturation, value))
+    
+orig_win = "original"
+cv2.namedWindow(orig_win, cv2.WINDOW_GUI_NORMAL)
+cv2.setMouseCallback(orig_win, color_picker)
 
 
 while True:
@@ -69,27 +76,47 @@ while True:
     ret, frame = cap.read()
     if ret:
         # Copy image to draw on
+       
         img = frame.copy()
 
-        # TODO Compute color ranges for display
+        # Compute color ranges for display
 
-        # TODO Draw selection color circle and text for HSV values
+        lower = np.array([hue - hue_range, saturation - saturation_range, value - value_range])
+        upper = np.array([hue + hue_range, saturation + saturation_range, value + value_range])
 
-        # TODO Convert to HSV
-        hsv = "TODO: replace this with the conversion code"
+        # Draw selection color circle and text for HSV values
 
-        # TODO Create a bitwise mask
+        img = cv2.circle(img, (width -50, height -50), 50, (blue, green, red), -1 )
+        
+        #  Convert to HSV
+        hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
-        # TODO Apply mask
+        #  Create a bitwise mask
 
-        # TODO Show the original image with drawings in one window
+        mask = cv2.inRange(hsv, lower, upper)
 
-        # TODO Show the masked image in another window
+        # Apply mask
 
-        # TODO Show the mask image in another window
+        masked_img = cv2.copyTo(img, mask=mask)
 
-        # TODO Deal with keyboard input
+        # Show the original image with drawings in one window
 
+        cv2.imshow(orig_win, img)
+
+        #  Show the masked image in another window
+
+        cv2.imshow("masked", masked_img)
+
+        # Show the mask image in another window
+
+        cv2.imshow("mask", mask)
+
+        #  Deal with keyboard input
+
+        key = cv2.waitKey(10)
+        if key == ord("q"):
+            break
+        
     else:
         print("Could not start video camera")
         break

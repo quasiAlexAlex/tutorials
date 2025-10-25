@@ -1,0 +1,7 @@
+def create_video ()
+    img1 =  cv2.imread("cybertruck.jpg", cv2.IMREAD_COLOR)
+    height, width, layers = img1.shape
+    video_name = "cybertruck_video.avi"
+    fourcc = cv2.VideoWriter_fourcc(*'XVID')
+    video = cv2.VideoWriter(video_name, fourcc, 1, (width, height))
+    video.write(img1)

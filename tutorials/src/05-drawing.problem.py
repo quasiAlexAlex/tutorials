@@ -3,6 +3,7 @@
 #
 # Create a white image and draw something on it.
 
+
 import cv2
 import numpy as np
 
